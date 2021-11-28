@@ -1,4 +1,4 @@
-package com.mo_zarara.thirdwayv;
+package com.mo_zarara.thirdwayv.data.room;
 
 import androidx.room.TypeConverter;
 

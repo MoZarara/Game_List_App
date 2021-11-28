@@ -1,4 +1,4 @@
-package com.mo_zarara.thirdwayv.data;
+package com.mo_zarara.thirdwayv.data.retrofit;
 
 import com.mo_zarara.thirdwayv.pojo.Root;
 

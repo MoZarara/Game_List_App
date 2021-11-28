@@ -1,10 +1,12 @@
-package com.mo_zarara.thirdwayv;
+package com.mo_zarara.thirdwayv.repo;
 
 import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+import com.mo_zarara.thirdwayv.data.room.GameDao;
+import com.mo_zarara.thirdwayv.data.room.GameRoomDB;
 import com.mo_zarara.thirdwayv.pojo.GamesModel;
 
 import java.util.List;

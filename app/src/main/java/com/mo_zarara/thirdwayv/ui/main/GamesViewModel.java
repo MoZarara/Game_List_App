@@ -1,16 +1,13 @@
 package com.mo_zarara.thirdwayv.ui.main;
 
 import android.app.Application;
-import android.app.GameManager;
 import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-import com.mo_zarara.thirdwayv.GameRepository;
-import com.mo_zarara.thirdwayv.data.GamesClint;
+import com.mo_zarara.thirdwayv.repo.GameRepository;
+import com.mo_zarara.thirdwayv.data.retrofit.GamesClint;
 import com.mo_zarara.thirdwayv.pojo.GamesModel;
 import com.mo_zarara.thirdwayv.pojo.Root;
 
@@ -20,9 +17,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.internal.schedulers.IoScheduler;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class GamesViewModel extends AndroidViewModel {

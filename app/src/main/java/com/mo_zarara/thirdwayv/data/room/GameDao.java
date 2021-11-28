@@ -1,4 +1,4 @@
-package com.mo_zarara.thirdwayv;
+package com.mo_zarara.thirdwayv.data.room;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -12,7 +12,7 @@ import com.mo_zarara.thirdwayv.pojo.GamesModel;
 import java.util.List;
 
 @Dao
-interface GameDao {
+public interface GameDao {
 
     @Insert
     void insert(GamesModel gamesModel);

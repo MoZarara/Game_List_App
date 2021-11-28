@@ -96,7 +96,6 @@ public class StartActivity extends AppCompatActivity {
 
         if (Paper.book().read("first_visit_no_internet") == null) {
             if (!isNetworkAvailable() ) {
-                Log.d(TAG, "mymy LoadingData: 8000");
                 VisibilityItems(View.GONE, View.GONE, View.VISIBLE);
             } else {
                 LoadingData(target_dates_str);

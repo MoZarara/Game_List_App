@@ -2,9 +2,6 @@ package com.mo_zarara.thirdwayv.pojo;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-
-import com.mo_zarara.thirdwayv.Converters;
 
 import java.util.List;
 

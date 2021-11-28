@@ -1,8 +1,4 @@
-package com.mo_zarara.thirdwayv.data;
-
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+package com.mo_zarara.thirdwayv.data.retrofit;
 
 import com.mo_zarara.thirdwayv.pojo.Root;
 

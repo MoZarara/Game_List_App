@@ -52,7 +52,7 @@ public class GameRecyclerAdapter extends RecyclerView.Adapter<GameRecyclerAdapte
         holder.released.setText(list.get(position).getReleased());
 
         
-        Picasso.get().load(list.get(position).getBackground_image()).
+        Picasso.get().load(list.get(position).getBackground_image()).fit().centerCrop().
                 placeholder(R.drawable.ic_baseline_crop_original_24).
                 into(holder.image);
 

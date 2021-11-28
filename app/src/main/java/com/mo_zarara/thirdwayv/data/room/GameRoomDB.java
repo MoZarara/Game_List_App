@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.mo_zarara.thirdwayv.data.retrofit.GamesClint;
 import com.mo_zarara.thirdwayv.pojo.GamesModel;
 
 @Database(entities = GamesModel.class, version = 1)
@@ -62,6 +63,7 @@ public abstract class GameRoomDB extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids) {
 
+            // insert
             return null;
         }
     }

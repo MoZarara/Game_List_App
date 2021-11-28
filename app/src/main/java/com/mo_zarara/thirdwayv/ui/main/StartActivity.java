@@ -48,14 +48,10 @@ public class StartActivity extends AppCompatActivity {
 
     String target_dates_str;
     int target_dates_num;
-    String[] mlistDates = {"None",
-            "2020-01-01,2021-12-31",
-            "2010-01-01,2019-12-31",
-            "2000-01-01,2009-12-31",
-            "1990-01-01,1999-12-31",
-            "1980-01-01,1989-12-31",
-            "1970-01-01,1979-12-31",
-            "1960-01-01,1969-12-31",
+    String[] mlistDates = {"None", "2020-01-01,2021-12-31",
+            "2010-01-01,2019-12-31", "2000-01-01,2009-12-31",
+            "1990-01-01,1999-12-31", "1980-01-01,1989-12-31",
+            "1970-01-01,1979-12-31", "1960-01-01,1969-12-31",
             "1950-01-01,1959-12-31"};
 
     private static final String TAG = "StartActivity";
@@ -83,6 +79,7 @@ public class StartActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
+        //Check - current date
         if (Paper.book().read("target_dates") != null) {
             target_dates_num = Paper.book().read("target_dates");
         } else {
@@ -94,6 +91,7 @@ public class StartActivity extends AppCompatActivity {
 
         target_dates_str = mlistDates[target_dates_num];
 
+        //Check - is this first visit for loading data
         if (Paper.book().read("first_visit_no_internet") == null) {
             if (!isNetworkAvailable() ) {
                 VisibilityItems(View.GONE, View.GONE, View.VISIBLE);
@@ -109,6 +107,7 @@ public class StartActivity extends AppCompatActivity {
 
 
 
+        //refresh button
         refresh_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,6 +127,7 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
+        //choose dates - button
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,6 +144,7 @@ public class StartActivity extends AppCompatActivity {
 
 
     }
+
 
 
     private void LoadingData(String dates) {
@@ -182,6 +183,7 @@ public class StartActivity extends AppCompatActivity {
     }
 
 
+    //Check - internet
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -190,6 +192,7 @@ public class StartActivity extends AppCompatActivity {
     }
 
 
+    //Search for game date
     public void Search(final int checkItems) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(StartActivity.this);

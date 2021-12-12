@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.mo_zarara.thirdwayv.data.retrofit.GamesClint;
+import com.mo_zarara.thirdwayv.data.retrofit.Converters;
 import com.mo_zarara.thirdwayv.pojo.GamesModel;
 
 @Database(entities = GamesModel.class, version = 1)
@@ -29,43 +29,10 @@ public abstract class GameRoomDB extends RoomDatabase {
                     GameRoomDB.class,
                     "Games_database")
                     .fallbackToDestructiveMigration()
-                    .addCallback(roomCallback)
                     .build();
         }
         return instance;
     }
 
-    private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
-
-        @Override
-        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
-
-            new PopulatDataAsyncTask(instance).execute();
-        }
-
-        @Override
-        public void onOpen(@NonNull SupportSQLiteDatabase db) {
-            super.onOpen(db);
-        }
-    };
-
-
-
-    private static class PopulatDataAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        private GameDao gameDao;
-
-        public PopulatDataAsyncTask(GameRoomDB db) {
-            gameDao = db.gameDao();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            // insert
-            return null;
-        }
-    }
 
 }

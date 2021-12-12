@@ -22,8 +22,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class GamesViewModel extends AndroidViewModel {
 
-    private static final String TAG = "GamesViewModel";
-
     private GameRepository mRepository;
 
     private LiveData<List<GamesModel>> mAllGames;
@@ -36,116 +34,13 @@ public class GamesViewModel extends AndroidViewModel {
 
     }
 
-
-    public void insert(GamesModel gamesModel) {
-        mRepository.insert(gamesModel);
+    public void insert(String dates) {
+        mRepository.insert(dates);
     }
 
-
-    public void deleteAllGames() {
-        mRepository.deleteAllGames();
-    }
 
     public LiveData<List<GamesModel>> getAllGames() {
         return mAllGames;
     }
-
-
-    public void getGamesData(String dates) {
-
-        Observable<Root> observable = GamesClint.getINSTANCE().GetData(dates).
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread());
-
-
-        Observer<Root> observer = new Observer<Root>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(@NonNull Root root) {
-
-                /**
-                 * Check if retrofit data equals room data or not
-                 * if equlas - don't change the room data
-                 * if not - update room data
-                 */
-
-                boolean check = true;
-                if (getAllGames().getValue().size() > 0 && getAllGames().getValue() != null) {
-                    for (int i = 0; i < root.getResults().size(); i++) {
-
-                        if (check) {
-                            if (root.getResults().get(i).getId().equals(getAllGames().getValue().get(i).getId()) &&
-                                    root.getResults().get(i).getName().equals(getAllGames().getValue().get(i).getName()) &&
-                                    root.getResults().get(i).getReleased().equals(getAllGames().getValue().get(i).getReleased()) &&
-                                    root.getResults().get(i).getBackground_image().equals(getAllGames().getValue().get(i).getBackground_image())) {
-                                check = true;
-
-                                for (int x = 0; x < root.getResults().get(i).getGenres().size(); x++) {
-                                    if (root.getResults().get(i).getGenres().get(x).getName().equals(getAllGames().getValue().get(i).getGenres().get(x).getName())) {
-                                        check = true;
-                                    } else {
-                                        check = false;
-                                    }
-                                }
-
-                            } else {
-                                check = false;
-                            }
-
-                        }
-                    };
-
-                } else {
-                    // here if room database is empty -
-                    // insert the new data ---just for first visit
-                    for (int i = 0; i < root.getResults().size(); i++) {
-                        GamesModel gamesModel = new GamesModel(root.getResults().get(i).getId(),
-                                root.getResults().get(i).getName(),
-                                root.getResults().get(i).getReleased(),
-                                root.getResults().get(i).getBackground_image(),
-                                root.getResults().get(i).getGenres());
-
-                        insert(gamesModel);
-                    };
-                }
-
-                /*
-               *if check is false this is mean to - the network data has changed
-               * so we will remove the old data and insert the new data
-                 */
-                if (!check) {
-                    deleteAllGames();
-                    for (int i = 0; i < root.getResults().size(); i++) {
-                        GamesModel gamesModel = new GamesModel(root.getResults().get(i).getId(),
-                                root.getResults().get(i).getName(),
-                                root.getResults().get(i).getReleased(),
-                                root.getResults().get(i).getBackground_image(),
-                                root.getResults().get(i).getGenres());
-
-                        insert(gamesModel);
-                    };
-                }
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-                Log.d(TAG, "mymy onError: " + e.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-
-
-        observable.subscribe(observer);
-
-    }
-
 
 }

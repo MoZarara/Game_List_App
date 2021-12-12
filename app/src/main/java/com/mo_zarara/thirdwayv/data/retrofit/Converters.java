@@ -1,4 +1,4 @@
-package com.mo_zarara.thirdwayv.data.room;
+package com.mo_zarara.thirdwayv.data.retrofit;
 
 import androidx.room.TypeConverter;
 

@@ -70,4 +70,7 @@ dependencies {
     implementation("androidx.room:room-runtime:2.3.0")
     annotationProcessor("androidx.room:room-compiler:2.3.0")
 
+    // for my library
+    implementation 'com.github.MoZarara:SaveValues:1.0.1'
+
 }

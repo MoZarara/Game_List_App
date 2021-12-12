@@ -11,6 +11,7 @@ import androidx.transition.Visibility;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -24,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mo_zarara.save_values.SaveValues;
 import com.mo_zarara.thirdwayv.R;
 import com.mo_zarara.thirdwayv.adapters.GameRecyclerAdapter;
 import com.mo_zarara.thirdwayv.pojo.GamesModel;
@@ -56,12 +58,14 @@ public class StartActivity extends AppCompatActivity {
 
     private static final String TAG = "StartActivity";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        Paper.init(this);
+
+        SaveValues.init(this);
 
         progressBar = findViewById(R.id.progressBar_id);
         recyclerView = findViewById(R.id.start_recycler_view_id);
@@ -80,31 +84,26 @@ public class StartActivity extends AppCompatActivity {
 
 
         //Check - current date
-        if (Paper.book().read("target_dates") != null) {
-            target_dates_num = Paper.book().read("target_dates");
+        if (SaveValues.read("target_dates", 100) != 100) {
+            target_dates_num = SaveValues.read("target_dates", 100);
         } else {
             target_dates_num = 0;
         }
 
 
-
-
         target_dates_str = mlistDates[target_dates_num];
 
         //Check - is this first visit for loading data
-        if (Paper.book().read("first_visit_no_internet") == null) {
-            if (!isNetworkAvailable() ) {
+        if (SaveValues.read("first_visit_no_internet") == null) {
+            if (!isNetworkAvailable()) {
                 VisibilityItems(View.GONE, View.GONE, View.VISIBLE);
             } else {
                 LoadingData(target_dates_str);
             }
 
-
         } else {
             LoadingData(target_dates_str);
         }
-
-
 
 
         //refresh button
@@ -112,14 +111,12 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 target_dates_str = mlistDates[target_dates_num];
-                if (Paper.book().read("first_visit_no_internet") == null) {
-                    if (!isNetworkAvailable() ) {
-
+                if (SaveValues.read("first_visit_no_internet") == null) {
+                    if (!isNetworkAvailable()) {
                         VisibilityItems(View.GONE, View.GONE, View.VISIBLE);
                     } else {
                         LoadingData(target_dates_str);
                     }
-
 
                 } else {
                     LoadingData(target_dates_str);
@@ -131,8 +128,8 @@ public class StartActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Paper.book().read("target_dates") != null) {
-                    target_dates_num = Paper.book().read("target_dates");
+                if (SaveValues.read("target_dates", 100) != 100) {
+                    target_dates_num = SaveValues.read("target_dates", 100);
                 } else {
                     target_dates_num = 0;
                 }
@@ -146,37 +143,36 @@ public class StartActivity extends AppCompatActivity {
     }
 
 
-
     private void LoadingData(String dates) {
 
-            VisibilityItems(View.VISIBLE, View.GONE, View.GONE);
+        VisibilityItems(View.VISIBLE, View.GONE, View.GONE);
 
-            if (isNetworkAvailable()) {
-                gamesViewModel.getGamesData(dates);
-            }
+        if (isNetworkAvailable()) {
+            gamesViewModel.insert(dates);
+        }
 
-            gamesViewModel.getAllGames().observe(this, new Observer<List<GamesModel>>() {
-                @Override
-                public void onChanged(List<GamesModel> gamesModels) {
-                    if (gamesModels != null) {
+        gamesViewModel.getAllGames().observe(this, new Observer<List<GamesModel>>() {
+            @Override
+            public void onChanged(List<GamesModel> gamesModels) {
+                if (gamesModels != null) {
 
-                        adapter.setList(gamesModels);
+                    adapter.setList(gamesModels);
 
-                        if (Paper.book().read("first_visit_no_internet") == null) {
-                            Paper.book().write("first_visit_no_internet", "Ok");
-                        }
-
-                        VisibilityItems(View.GONE, View.VISIBLE, View.GONE);
-                    } else {
-                        VisibilityItems(View.GONE, View.GONE, View.VISIBLE);
+                    if (SaveValues.read("first_visit_no_internet") == null) {
+                        SaveValues.write("first_visit_no_internet", "Ok");
                     }
+
+                    VisibilityItems(View.GONE, View.VISIBLE, View.GONE);
+                } else {
+                    VisibilityItems(View.GONE, View.GONE, View.VISIBLE);
                 }
-            });
+            }
+        });
 
 
     }
 
-    private void VisibilityItems(int progressV, int main_layoutV, int Internet_failedV){
+    private void VisibilityItems(int progressV, int main_layoutV, int Internet_failedV) {
         progressBar.setVisibility(progressV);
         main_layout.setVisibility(main_layoutV);
         linearLayout_Internet_failed.setVisibility(Internet_failedV);
@@ -203,8 +199,7 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
 
                 if (isNetworkAvailable()) {
-                    Paper.book().write("target_dates", which);
-
+                    SaveValues.write("target_dates", which);
                     target_dates_str = mlistDates[which];
                     LoadingData(target_dates_str);
                 } else {
